@@ -8,4 +8,9 @@ export const api = axios.create({
 export const registerUser = (userData: IFormInput) => {
     return api.post('/users', userData);
   };
+
+export const loginUser = (loginData: IFormInput) => {
+    return api.post('/auth', loginData)
+}
+
   

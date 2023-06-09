@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import validationSchema from "../../interfaces and schemas/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IFormInput } from "../../interfaces and schemas/interfaces";
+import { registerUser } from "../../api";
 
 const FormRegister: React.FC = () => {
   const {
@@ -11,7 +12,15 @@ const FormRegister: React.FC = () => {
   } = useForm<IFormInput>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = (data: IFormInput) => console.log(data);
+  const onSubmit = (data: IFormInput) => {
+    registerUser(data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
 
   return (
     <section>
@@ -27,8 +36,9 @@ const FormRegister: React.FC = () => {
           <input {...register("email")} placeholder="Email" />
           {errors.email && <p>{errors.email.message}</p>}
         </label>
-        
+
         <label>
+          Password:
           <input
             {...register("password")}
             type="password"
@@ -37,16 +47,19 @@ const FormRegister: React.FC = () => {
           {errors.password && <p>{errors.password.message}</p>}
         </label>
 
-        <input {...register("phone")} placeholder="Phone" />
-        {errors.phone && <p>{errors.phone.message}</p>}
+        <label>
+          Phone number:
+          <input {...register("phone")} placeholder="Phone" />
+          {errors.phone && <p>{errors.phone.message}</p>}
+        </label>
 
         <label>
-          Is Medic
+          Is Medic:
           <input {...register("is_medic")} type="checkbox" />
         </label>
 
         <label>
-          Is Admin
+          Is Admin:
           <input {...register("is_admin")} type="checkbox" />
         </label>
 
